@@ -1,0 +1,116 @@
+/* Reset some default styles for consistency */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Set default font family and size */
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+  }
+  
+  /* Style the main container of the app */
+  .app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Style the navigation links */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  nav h1 {
+    font-size: 24px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #333;
+    margin-left: 10px;
+  }
+  
+  nav a:hover {
+    color: #007bff;
+  }
+  
+  /* Style the paste list */
+  ul {
+    list-style: none;
+    margin-top: 20px;
+  }
+  
+  ul li {
+    margin-bottom: 10px;
+  }
+  
+  ul li a {
+    color: #007bff;
+  }
+  
+  ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Style the create paste form */
+  form {
+    margin-top: 20px;
+  }
+  
+  label, input, textarea {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Style the view paste page */
+  .view-paste {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  .view-paste h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .view-paste p {
+    white-space: pre-wrap; /* Preserve line breaks */
+  }
+  
+  .view-paste p:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  
+  .view-paste a {
+    color: #007bff;
+  }
+  
+  .view-paste a:hover {
+    text-decoration: underline;
+  }
+  
