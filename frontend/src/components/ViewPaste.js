@@ -4,7 +4,8 @@ import { AppContext } from '../AppContext';
 
 const ViewPaste = () => {
   const [paste, setPaste] = useState(null);
-  const {currentPasteId} = useContext(AppContext);
+
+  
 
   const fetchPaste = async () => {
     try {

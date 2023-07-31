@@ -107,7 +107,6 @@ exports.deletePaste = catchAsync(async (req, res, next) => {
 //Get all pastes
 exports.getAllPastes = catchAsync(async (req, res, next) => {
     // Retrieve all pastes from the database using the Paste model
-
     // EXECUTE QUERY
     const features = new APIFeatures(Paste.find(),req.query)
       .filter()

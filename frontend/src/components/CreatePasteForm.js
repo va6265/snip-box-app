@@ -61,16 +61,10 @@ const CreatePasteForm = () => {
           <label>Content:</label>
           <textarea value={content} onChange={(e) => setContent(e.target.value)} />
         </div>
-        <br/>
-        <br/>
-        <br/>
         <div>
           <label>Expiration Date:</label>
           <Datetime />
         </div>
-        <br/>
-        <br/>
-        <br/>
         <div>
           <label>Privacy:</label>
           <input type="checkbox" checked={privacy} onChange={(e) => setPrivacy(e.target.checked)} />

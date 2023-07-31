@@ -15,7 +15,7 @@ router
   .get(pasteController.getSinglePaste)
   .patch(pasteController.updatePaste)
   .put(pasteController.replacePaste)
-  .delete(pasteController.deletePaste);
+  .delete(authController.protect, authController.restrictTo('admin'), pasteController.deletePaste);
 
   // Get pastes by tag
 router.get('/tags/:tag', async (req, res) => {

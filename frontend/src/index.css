@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Reset some default styles for consistency */
 body, h1, h2, h3, p, ul, li {
     margin: 0;

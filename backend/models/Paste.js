@@ -12,12 +12,13 @@ const pasteSchema = new mongoose.Schema({
     required: [true, ' A paste must have a content'],
   },
   expirationDate: {
-    type: Date,
-    default: null,
+    type: Number,
+    default: 20
   },
   privacy: {
-    type: Boolean,
-    default: true, //default public
+    type: String,
+    default: 'unlisted',
+    enum: ['unlisted','private','public']
   },
   tags: {
     type: [String], // Array of strings
@@ -47,6 +48,8 @@ const pasteSchema = new mongoose.Schema({
   },
   password: String 
 });
+
+pasteSchema.index({ createdAt: 1 }, { expireAfterSeconds: 10 });
 
 const Paste = mongoose.model('Paste', pasteSchema);
 

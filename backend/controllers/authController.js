@@ -42,7 +42,7 @@ exports.login = catchAsync(async(req,res,next)=>{
 })
 
 exports.protect = catchAsync(async(req,res,next)=>{
-    //GET TOKEN
+    //1) GET TOKEN
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
         token = req.headers.authorization.split(' ')[1];
@@ -50,9 +50,54 @@ exports.protect = catchAsync(async(req,res,next)=>{
     if(!token)
         return next(new AppError('You are not logged in! Please log in to get access',401));
 
-    // VERIFICATION TOKEN
+    //2) VERIFICATION TOKEN
     const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-    console.log(decoded);
 
+    //3) CHECK IF USER STILL EXISTS
+    const currentUser = await User.findById(decoded.id);
+    if(!currentUser)
+        return next(new AppError('The user belonging to this token no longer exists!',401));
+
+    // 4) Check if user has changed password after the toke was issued
+    if(currentUser.changedPasswordAfter(decoded.iat)){
+        return next(new AppError('User recently changed password!. Please login again',401));
+    }
+
+    //GRANT ACCESS TO PROTECTED ROUTE
+    req.user = currentUser;
     next();
   })
+
+
+  exports.restrictTo = (...roles)=>{
+    //roles is an array of inputs
+    return (req,res,next)=>{
+        if(!roles.includes(req.user.role)){
+            return next(
+                new AppError('You do not have the permission to perform this action',403)
+            )
+        }
+        next();
+    }
+  };
+
+  exports.forgotPassword = catchAsync(async(req,res,next)=>{
+    // 1) Get user based on POSTed email
+    const user = await User.findOne({email: req.body.email});
+    if(!user)
+        return next(new AppError('There is no user with this email address..',404));
+
+    // 2)Generate the random reset token
+    const resetToken = user.createPasswordResetToken();
+    await user.save({validateBeforeSave: false});
+
+    // 3) Send it to user's email
+
+
+
+  })
+
+  exports.resetPassword =()=>{
+
+  }
+  
