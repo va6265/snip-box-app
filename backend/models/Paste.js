@@ -25,13 +25,13 @@ const pasteSchema = new mongoose.Schema({
     default: [],
   },
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: 'User',
     default: null,
   },
   createdAt:{
     type : Date,
-    default: Date.now()
+    default: Date.now
   },
   category:{
     type: String,

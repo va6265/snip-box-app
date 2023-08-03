@@ -22,9 +22,9 @@ const userSchema = new mongoose.Schema({
     minlength:8,
     select: false
   },
-  confirmPassword:{
+  passwordConfirm:{
     type: String,
-    required: [true, 'User must enter a confirm password'],
+    required: [true, 'User must enter a password confirm'],
     validate: {
       //THIS W0RKS ONLY ON SAVE(), CREATE() AND NOT ON UPDATE()
       validator: function(el){
@@ -41,20 +41,25 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
-  pastes: {
-    type: [{
-      _id: false,
-      id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Paste',
-        required: true
-      },
-      title : {
-        type: String,
-        required: true
-      }
-    }]
-  }
+  active:{
+    type: Boolean,
+    default: true,
+    select: false
+  },
+  // pastes: {
+  //   type: [{
+  //     _id: false,
+  //     id: {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: 'Paste',
+  //       required: true
+  //     },
+  //     title : {
+  //       type: String,
+  //       required: true
+  //     }
+  //   }]
+  // }
 });
 
 //HOOKS
@@ -62,8 +67,23 @@ userSchema.pre('save',async function(next){
   if(!this.isModified('password')) return next();
 
   this.password = await bcrypt.hash(this.password,12);
-  this.confirmPassword = undefined;
+  this.passwordConfirm = undefined;
 
+  next();
+})
+
+userSchema.pre('save', function(next){
+  if(!this.isModified('password') || this.isNew) return next();
+
+  // -1000 to counter delay, as token ggets created earlier but there is a delay in db
+  this.passwordChangedAt = Date.now() - 1000;
+
+  next();
+})
+
+userSchema.pre(/^find/, function(next){
+  //this points to the current query
+  this.find({active: {$ne: false}});
   next();
 })
 
@@ -88,7 +108,7 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
 userSchema.methods.createPasswordResetToken = function(){
   //sent via email
   const resetToken = crypto.randomBytes(32).toString('hex');
-
+  console.log(resetToken);
   //reset token encrypted to be stored in db
   this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
