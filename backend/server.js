@@ -2,9 +2,9 @@ const connectToDatabase = require('./utils/database');
 const dotenv = require('dotenv');
 dotenv.config({path: './config.env'});
 
-//
+
 if(process.env.NODE_ENV==='production'){
-  const autoDeleteTask = require('./deleteExpiredDocuments');
+  require('./deleteExpiredDocuments');
 }
 
 const app = require('./app');

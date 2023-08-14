@@ -12,41 +12,28 @@ router
 // Route for fetching a single paste by ID
 router
   .route('/:id')
-  .get(pasteController.getSinglePaste)
-  .patch(pasteController.updatePaste)
+  .post(pasteController.accessControl, pasteController.getSinglePaste)
+  .patch(authController.protect, pasteController.updatePaste)
   .put(pasteController.replacePaste)
-  .delete(authController.protect, authController.restrictTo('admin'), pasteController.deletePaste);
-
-  // Get pastes by tag
-router.get('/tags/:tag', async (req, res) => {
-    try {
-      const tag = '#' + req.params.tag; // Tag should start with #
-      const pastesWithTag = await Paste.find({ tags: tag });
-      res.json(pastesWithTag);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch pastes by tag' });
-    }
-  });
+  .delete(authController.protect, authController.restrictTo('user'), pasteController.deletePaste);
 
 
-// Get all public pastes
-router.get('/public', async (req, res) => {
-  try {
-    const publicPastes = await Paste.find({ privacy: true });
-    res.json(publicPastes);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch public pastes' });
-  }
-});
+router.get('/public',pasteController.publicPastes);
+  
+router.patch('/:id/like', authController.protect, pasteController.likePaste);
+router.patch('/:id/dislike', authController.protect, pasteController.dislikePaste);
+router.get('/:id/likeDislikeCount', pasteController.getLikeDislikeCount)
 
-// Get all private pastes for the authenticated user
-router.get('/private', async (req, res) => {
-  try {
-    const privatePastes = await Paste.find({ privacy: false, user: req.user._id });
-    res.json(privatePastes);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch private pastes' });
-  }
-});
+
+//   // Get pastes by tag
+// router.get('/tags/:tag', async (req, res) => {
+//     try {
+//       const tag = '#' + req.params.tag; // Tag should start with #
+//       const pastesWithTag = await Paste.find({ tags: tag });
+//       res.json(pastesWithTag);
+//     } catch (error) {
+//       res.status(500).json({ error: 'Failed to fetch pastes by tag' });
+//     }
+//   });
 
 module.exports = router;

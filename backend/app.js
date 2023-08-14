@@ -14,6 +14,17 @@ const pasteRoutes = require('./routes/pasteRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 //GLOBAL MIDDLEWARES
+
+// connect with frontend
+const corsOptions = {
+  origin: 'http://127.0.0.1:3000',
+  credentials: true
+}
+app.use(cors(corsOptions));
+
+
+app.disable('etag');
+
 // Set security HTTP headers
 app.use(helmet());
 
@@ -32,7 +43,9 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour!'
 });
-app.use('/api', limiter);
+
+if(process.env.NODE_ENV === 'production')
+  app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
@@ -59,8 +72,8 @@ app.use(
   })
 );
 
-//connect with frontend
-app.use(cors());
+
+ 
 
 // Mount the Paste routes
 app.use('/api/pastes', pasteRoutes);

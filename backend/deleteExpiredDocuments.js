@@ -1,16 +1,29 @@
 const cron = require('node-cron');
-const Paste = require('./models/Paste'); // Replace with the correct path to your model file
+const Paste = require('./models/Paste');
+const {Like, Dislike} = require('./models/LikeDislike')
 
-// Schedule the task to run every day at midnight (adjust as needed)
-const autoDeleteTask = cron.schedule('*/30 * * * *', async () => {
+// Schedule the task
+const autoDeleteTask = cron.schedule('0 */10 * * * *', async () => {
   try {
-    const now = new Date();
-    // Find and delete all documents where the 'expireAt' field is less than or equal to the current time
-    const {deletedCount} = await Paste.deleteMany({ expireAt: { $lte: now } });
-    if(!deletedCount)
-        console.log("Zero documents expired");
-    else
-        console.log('${deletedCount} expired documents deleted successfully.');
+    const now = new Date(Date.now());
+    console.log('deleting...')
+
+
+    const pastesToDelete = await Paste.find({ expiresAt: { $lt: now } });
+    const pasteIdsToDelete = pastesToDelete.map(paste => paste._id);
+
+     // Delete pastes
+     const pasteResult = await Paste.deleteMany({ expiresAt: { $lt: now } });
+     console.log(`${pasteResult.deletedCount} expired paste(s) deleted`);
+     
+     // Delete corresponding likes
+     const likeResult = await Like.deleteMany({ pasteId: { $in: pasteIdsToDelete } });
+     console.log(`${likeResult.deletedCount} expired like(s) deleted`);
+     
+     // Delete corresponding dislikes
+     const dislikeResult = await Dislike.deleteMany({ pasteId: { $in: pasteIdsToDelete } });
+     console.log(`${dislikeResult.deletedCount} expired dislike(s) deleted`);
+        
   } catch (error) {
     console.error('Error deleting expired documents:', error);
   }
