@@ -24,12 +24,12 @@ function Dashboard() {
   useEffect(() => {
     async function getUserData() {
       try {
-        const user = await axios.get("http://127.0.0.1:8000/api/users/me");
+        const user = await axios.get("/users/me");
 
         if(user.data.data.name !== id)
           throw new Error();
 
-        const response = await axios.get("http://127.0.0.1:8000/api/pastes");
+        const response = await axios.get("/pastes");
         setUserData(response.data);
       } catch (error) {
         setError(error);

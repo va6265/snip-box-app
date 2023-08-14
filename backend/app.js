@@ -17,7 +17,7 @@ const userRoutes = require('./routes/userRoutes');
 
 // connect with frontend
 const corsOptions = {
-  origin: 'http://127.0.0.1:3000',
+  origin: ['https://snip-box-app.vercel.app/'],
   credentials: true
 }
 app.use(cors(corsOptions));

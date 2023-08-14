@@ -1,7 +1,10 @@
 import axios from "axios";
 
+const vercelUrl = 'https://snip-box-app-backend.vercel.app/';
+const localUrl = 'http://127.0.0.1:8000/';
+
 const axiosInstance = axios.create({
-  baseURL: "http://127.0.0.1:8000", // Your API base URL
+  baseURL: `${vercelUrl}api/`, // Your API base URL
   withCredentials: true, // Important: Include this to send cookies with requests
 });
 

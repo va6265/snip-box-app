@@ -4,8 +4,8 @@
   "description": "This is a Snip Box",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "start:prod": "node NODE_ENV=production index.js",
+    "start": "nodemon index.js",
+    "start:prod": "nodemon NODE_ENV=production index.js",
     "debug": "ndb server.js"
   },
   "author": "Vaibhav Agarwal",

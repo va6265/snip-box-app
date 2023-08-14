@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import EditSnip from "./components/snip/EditSnip";
 import ShowPublicSnips from './components/snip/ShowPublicSnips';
+import axios from "./utils/axios"
 
 const theme = createTheme({
   components: {

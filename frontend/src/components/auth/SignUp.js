@@ -52,10 +52,10 @@ function SignUp() {
     }
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/users/signup", inputs);
+      await axios.post("/users/signup", inputs);
 
       setFeedback({ ...feedback, snackbar: true });
-      await axios.post("http://127.0.0.1:8000/api/users/login", {email: inputs.email, password: inputs.password})
+      await axios.post("/users/login", {email: inputs.email, password: inputs.password})
       setTimeout(() => navigate("/"), 1000);
       
     } catch (error) {

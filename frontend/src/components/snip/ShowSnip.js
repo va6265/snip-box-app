@@ -40,7 +40,7 @@ function ShowSnip() {
   const navigate = useNavigate();
 
   const handleDeleteClick = async () => {
-    await axios.delete(`http://127.0.0.1:8000/api/pastes/${snipId}`);
+    await axios.delete(`/pastes/${snipId}`);
     setFeedback('Snip deleted successfully');
     setFeedbackOpen(true);
     setTimeout(() => navigate(-1), 1000);
@@ -53,7 +53,7 @@ function ShowSnip() {
       return;
     }
 
-    await axios.patch(`http://127.0.0.1:8000/api/pastes/${snipId}/like`);
+    await axios.patch(`/pastes/${snipId}/like`);
     setOpen(true);
     setIsProtected(true);
     getSnipData();
@@ -66,7 +66,7 @@ function ShowSnip() {
       return;
     }
 
-    await axios.patch(`http://127.0.0.1:8000/api/pastes/${snipId}/dislike`);
+    await axios.patch(`/pastes/${snipId}/dislike`);
     setOpen(true);
     setIsProtected(true);
     getSnipData();
@@ -80,11 +80,11 @@ function ShowSnip() {
   async function getSnipData() {
     try {
       const count = await axios.get(
-        `http://127.0.0.1:8000/api/pastes/${snipId}/likeDislikeCount`
+        `/pastes/${snipId}/likeDislikeCount`
       );
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/pastes/${snipId}`,
+        `/pastes/${snipId}`,
         { password }
       );
 

@@ -46,10 +46,9 @@ function Login() {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/users/Login", inputs, {
-        withCredentials: true,
-      });
+      await axios.post('/users/login', inputs);
 
+      console.log(document.cookie);
       setFeedback({ ...feedback, snackbar: true });
       setTimeout(() => navigate("/", { replace: true }), 1000);
     } catch (error) {

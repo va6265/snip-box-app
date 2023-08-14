@@ -43,7 +43,7 @@ function Navbar() {
   useEffect(() => {
     async function getUserData() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/users/me');
+        const response = await axios.get('/users/me');
         setUserData(response.data.data);
       } catch (error) {
         setError(error);
@@ -215,7 +215,7 @@ function Navbar() {
 
                   <MenuItem
                     onClick={async() => {
-                      await axios.post(`http://127.0.0.1:8000/api/users/logout`);
+                      await axios.post(`/users/logout`);
                       navigate('/login');
                       handleClose();
                     }}
