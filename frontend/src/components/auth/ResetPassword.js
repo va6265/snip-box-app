@@ -18,6 +18,7 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../utils/axios";
+import {setCookie} from '../../utils/Cookie';
 
 function ResetPassword() {
   const { resetToken } = useParams();
@@ -50,11 +51,11 @@ function ResetPassword() {
     }
 
     try {
-      await axios.patch(
+      const response = await axios.patch(
         `/users/resetPassword/${resetToken}`,
         inputs
       );
-
+      setCookie('jwt',`${response.data.token}`,90);
       setFeedback({ ...feedback, snackbar: true });
       setTimeout(() => navigate("/login", {replace: true}), 1000);
     } catch (error) {

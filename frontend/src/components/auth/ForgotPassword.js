@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-import axios from "axios";
+import axios from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 function ForgotPassword() {

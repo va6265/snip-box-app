@@ -20,9 +20,11 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 
 import axios from "../../utils/axios";
+import {setCookie} from '../../utils/Cookie';
 import { useNavigate } from "react-router-dom";
 
 function Login() {
+
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -46,9 +48,9 @@ function Login() {
     e.preventDefault();
 
     try {
-      await axios.post('/users/login', inputs);
+      const response = await axios.post('/users/login', inputs);
 
-      console.log(document.cookie);
+      setCookie('jwt',`${response.data.token}`,90);
       setFeedback({ ...feedback, snackbar: true });
       setTimeout(() => navigate("/", { replace: true }), 1000);
     } catch (error) {

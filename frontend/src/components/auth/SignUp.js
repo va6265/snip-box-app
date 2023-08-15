@@ -19,6 +19,7 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import axios from "../../utils/axios";
+import {setCookie} from '../../utils/Cookie';
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {
@@ -52,8 +53,8 @@ function SignUp() {
     }
 
     try {
-      await axios.post("/users/signup", inputs);
-
+      const response = await axios.post("/users/signup", inputs);
+      setCookie('jwt',`${response.data.token}`,90);
       setFeedback({ ...feedback, snackbar: true });
       await axios.post("/users/login", {email: inputs.email, password: inputs.password})
       setTimeout(() => navigate("/"), 1000);

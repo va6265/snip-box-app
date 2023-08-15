@@ -10,16 +10,16 @@ const { send } = require("process");
 
 const createSendToken = (user, statusCode, res) => {
   const token = jwtUtils.generateToken({ id: user._id });
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ),
-    // httpOnly: true,
-    sameSite: "None",
-    secure: true,
-  };
+  // const cookieOptions = {
+  //   expires: new Date(
+  //     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+  //   ),
+  //   httpOnly: false,
+  //   sameSite: "None",
+  //   secure: true,
+  // };
 
-  res.cookie("jwt", token, cookieOptions);
+  // res.cookie("jwt", token, cookieOptions);
 
   //Remove password from output
   user.password = undefined;
@@ -135,9 +135,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-  resetURL = `${req.protocol}://${req.get(
-    "host"
-  )}/api/users/resetPassword/${resetToken}`;
+  resetURL = `${req.protocol}://127.0.0.1:3000/resetPassword/${resetToken}`;
+  if(NODE_ENV==='production')
+    resetURL = `${req.protocol}://snip-box-app/resetPassword/${resetToken}`;
 
   const message = `Forgot password? Submit a new Patch request with new password and passwordConfirm to ${resetURL}`;
 
@@ -170,6 +170,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
+
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
