@@ -136,7 +136,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send it to user's email
   resetURL = `${req.protocol}://127.0.0.1:3000/resetPassword/${resetToken}`;
-  if(NODE_ENV==='production')
+  if(process.env.NODE_ENV==='production')
     resetURL = `${req.protocol}://snip-box-app/resetPassword/${resetToken}`;
 
   const message = `Forgot password? Submit a new Patch request with new password and passwordConfirm to ${resetURL}`;
