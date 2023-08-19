@@ -203,7 +203,7 @@ function CreateSnip({ snipData }) {
               </FormControl>
 
               <DateTimePicker
-                label='Date Time Picker'
+                label='Snip Expiration'
                 value={expiresAt}
                 onChange={(newValue) => setExpiresAt(newValue)}
                 viewRenderers={{
